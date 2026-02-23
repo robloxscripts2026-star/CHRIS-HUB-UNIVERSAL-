@@ -1,6 +1,6 @@
 getgenv().Resolution = { [".gg/scripters"] = 0.65 }
 
--- ⚡ CHRISS-HUB PANEL 🌌 FULLSCREEN (MM2) + TU KEY SYSTEM + 4H COOLDOWN
+-- ⚡ CHRISS-HUB PANEL 🌌 (MM2) + TU KEY SYSTEM + 4H USO + 24H COOLDOWN PERSISTENTE (JSON)
 
 local UIS = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
@@ -13,7 +13,7 @@ pcall(function()
     CoreGui.CHRISSKeyGui:Destroy()
 end)
 
--- 🔑 TU SISTEMA DE KEY (70 keys + 4 horas uso + 24h cooldown)
+-- 🔑 TU SISTEMA DE KEY (70 keys + 4 horas uso + 24h cooldown persistente en JSON)
 
 local ValidKeys = {
     "CH-KEY_7R2wP9qLzXn4M1s",
@@ -88,7 +88,31 @@ local ValidKeys = {
     "CH-KEY_k4m9N1qJyS5vT8B"
 }
 
-local keyCooldowns = {}  -- key = tiempo de cooldown (timestamp)
+local JSON_FILE = "CHRISS_HUB_KeyCooldown.json"
+
+-- Guardar cooldown
+local function saveCooldown(key)
+    local data = {}
+    local success, json = pcall(function()
+        return isfile(JSON_FILE) and readfile(JSON_FILE) or "{}"
+    end)
+    if success then
+        data = HttpService:JSONDecode(json)
+    end
+    data[key] = os.time()
+    writefile(JSON_FILE, HttpService:JSONEncode(data))
+end
+
+-- Leer cooldown
+local function getCooldown(key)
+    if not isfile(JSON_FILE) then return 0 end
+    local success, json = pcall(function()
+        return readfile(JSON_FILE)
+    end)
+    if not success then return 0 end
+    local data = HttpService:JSONDecode(json)
+    return data[key] or 0
+end
 
 -- DRAG FUNCTION
 local function Drag(gui)
@@ -122,12 +146,12 @@ local function LoadHub()
     local Blur = Instance.new("BlurEffect", Lighting)
     Blur.Size = 0
 
-    -- OPEN BUTTON (CH-EZZ giratorio)
+    -- OPEN BUTTON (🪐 giratorio)
     local OpenButton = Instance.new("TextButton", Gui)
     OpenButton.Size = UDim2.new(0,90,0,90)
     OpenButton.Position = UDim2.new(0,20,0.45,0)
-    OpenButton.Text = "CH-EZZ"
-    OpenButton.TextSize = 35
+    OpenButton.Text = "🪐"
+    OpenButton.TextSize = 45
     OpenButton.BackgroundColor3 = Color3.fromRGB(0,0,0)
     OpenButton.TextColor3 = Color3.fromRGB(255,255,255)
     OpenButton.ZIndex = 9999
@@ -137,9 +161,9 @@ local function LoadHub()
         OpenButton.Rotation += 2
     end)
 
-    -- MAIN FRAME (más pequeño)
+    -- MAIN FRAME (más pequeño y movible)
     local Frame = Instance.new("Frame", Gui)
-    Frame.Size = UDim2.new(0, 600, 0, 450)  -- Menú más pequeño
+    Frame.Size = UDim2.new(0, 600, 0, 450)
     Frame.Position = UDim2.new(0.5, -300, 0.5, -225)
     Frame.BackgroundColor3 = Color3.fromRGB(10,10,15)
     Frame.BackgroundTransparency = 0.15
@@ -151,9 +175,9 @@ local function LoadHub()
     -- Borde morado neón permanente
     local Stroke = Instance.new("UIStroke", Frame)
     Stroke.Thickness = 3
-    Stroke.Color = Color3.fromRGB(180, 0, 255)  -- Morado neón
+    Stroke.Color = Color3.fromRGB(180, 0, 255)
 
-    -- Título principal con tus créditos
+    -- Título con tus créditos
     local Title = Instance.new("TextLabel", Frame)
     Title.Size = UDim2.new(1,0,0,60)
     Title.Text = "✨CHRISS-HUB PANEL🌌"
@@ -188,10 +212,10 @@ local function LoadHub()
 
         local CreditosTitle = Instance.new("TextLabel")
         CreditosTitle.Parent = CreditosFrame
-        CreditosTitle.Size = UDim2.new(1, 0, 0, 40)
+        CreditosTitle.Size = UDim2.new(1, 0, 1, 0)
         CreditosTitle.Text = "✨sigueme @sasware32✨"
         CreditosTitle.Font = Enum.Font.GothamBold
-        CreditosTitle.TextSize = 24
+        CreditosTitle.TextSize = 28
         CreditosTitle.TextColor3 = Color3.fromRGB(200, 100, 255)
         CreditosTitle.BackgroundTransparency = 1
 
@@ -243,16 +267,16 @@ local function LoadHub()
         return b
     end
 
-    -- Botones (manteniendo originales)
-    local AutoFarmBtn = Btn("🤖 AUTO FARM MM2", 1)
+    -- Botones originales
+    local AutoFarmBtn = Btn("💰 AUTO FARM MM2", 1)
     local WeaponsBtn = Btn("🔫 WEAPONS GENERATOR", 2)
     local ProjectReverseBtn = Btn("🔄 PROJECT REVERSE [MM2]", 3)
     local Hitbox = Btn("🎯 HITBOX", 4)
     local Yarhm = Btn("🔫 YARHM", 5)
     local Speed = Btn("⚡ SPEED GLITCH", 6)
     local Infinite = Btn("♾️ INFINITE YIELD", 7)
-    local FlyV3 = Btn("🕊️ FLY V3", 8)
-    local ResBtn = Btn("📺 1080x1080", 9)
+    local FlyV3 = Btn("📁 FLY V3", 8)
+    local ResBtn = Btn("🖥️ 1080x1080", 9)
 
     OpenButton.MouseButton1Click:Connect(function()
         Frame.Visible = not Frame.Visible
@@ -368,18 +392,37 @@ local function KeyGui()
     Btn.MouseButton1Click:Connect(function()
         local enteredKey = Box.Text
         if table.find(ValidKeys, enteredKey) then
-            -- Verificar cooldown de la key
-            local cooldown = keyCooldowns[enteredKey] or 0
             local currentTime = os.time()
-            if currentTime - cooldown < 4 * 3600 then  -- 4 horas
-                Btn.Text = "🔒 EN COOLDOWN (" .. math.floor((4*3600 - (currentTime - cooldown))/3600) .. "h)"
-                task.wait(2)
+            local cooldownStart = getCooldown(enteredKey)
+            local timeSinceUse = currentTime - cooldownStart
+
+            -- Si ya pasó 24h desde el último uso → reset cooldown
+            if timeSinceUse >= 24 * 3600 then
+                cooldownStart = 0
+            end
+
+            -- Si está en uso (dentro de 4 horas) → mostrar restante
+            if cooldownStart > 0 and timeSinceUse < 4 * 3600 then
+                local remaining = 4 * 3600 - timeSinceUse
+                Btn.Text = "🔒 EN USO (" .. math.floor(remaining / 3600) .. "h " .. math.floor((remaining % 3600)/60) .. "m)"
+                task.wait(3)
                 Btn.Text = "UNLOCK HUB"
                 return
             end
 
-            -- Guardar cooldown
-            keyCooldowns[enteredKey] = currentTime
+            -- Si está en cooldown (entre 4h y 24h) → mostrar restante
+            if cooldownStart > 0 and timeSinceUse < 24 * 3600 then
+                local remaining = 24 * 3600 - timeSinceUse
+                Btn.Text = "🔒 COOLDOWN (" .. math.floor(remaining / 3600) .. "h restantes)"
+                task.wait(3)
+                Btn.Text = "UNLOCK HUB"
+                return
+            end
+
+            -- Key válida y sin cooldown → iniciar 4 horas de uso
+            if getgenv().keyUsage == nil then getgenv().keyUsage = {} end
+            getgenv().keyUsage[enteredKey] = currentTime
+            saveCooldown(enteredKey)
 
             Gui:Destroy()
             LoadHub()
