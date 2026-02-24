@@ -9,8 +9,8 @@ local Lighting = game:GetService("Lighting")
 local HttpService = game:GetService("HttpService")
 
 pcall(function()
-    CoreGui.CHRISSHUB:Destroy()
-    CoreGui.CHRISSKeyGui:Destroy()
+    if CoreGui:FindFirstChild("CHRISSHUB") then CoreGui.CHRISSHUB:Destroy() end
+    if CoreGui:FindFirstChild("CHRISSKeyGui") then CoreGui.CHRISSKeyGui:Destroy() end
 end)
 
 -- 🔑 TU SISTEMA DE KEY (70 keys + caducidad 4 horas + 24h cooldown persistente en JSON)
@@ -161,23 +161,19 @@ local function LoadHub()
         OpenButton.Rotation += 2
     end)
 
-    -- MAIN FRAME (más pequeño y movible)
+    -- MAIN FRAME
     local Frame = Instance.new("Frame", Gui)
     Frame.Size = UDim2.new(0, 600, 0, 450)
     Frame.Position = UDim2.new(0.5, -300, 0.5, -225)
     Frame.BackgroundColor3 = Color3.fromRGB(10,10,15)
     Frame.BackgroundTransparency = 0.15
     Frame.Visible = false
-    Frame.ZIndex = 1
     Frame.Active = true
-    Frame.Draggable = true
 
-    -- Borde morado neón permanente
     local Stroke = Instance.new("UIStroke", Frame)
     Stroke.Thickness = 3
     Stroke.Color = Color3.fromRGB(180, 0, 255)
 
-    -- Título con tus créditos
     local Title = Instance.new("TextLabel", Frame)
     Title.Size = UDim2.new(1,0,0,60)
     Title.Text = "✨CHRISS-HUB PANEL🌌"
@@ -186,7 +182,6 @@ local function LoadHub()
     Title.TextColor3 = Color3.fromRGB(200, 100, 255)
     Title.BackgroundTransparency = 1
 
-    -- Botón créditos (🌠)
     local CreditosBtn = Instance.new("TextButton", Frame)
     CreditosBtn.Size = UDim2.new(0, 40, 0, 40)
     CreditosBtn.Position = UDim2.new(1, -50, 0, 10)
@@ -195,60 +190,44 @@ local function LoadHub()
     CreditosBtn.TextSize = 28
     CreditosBtn.TextColor3 = Color3.fromRGB(200, 100, 255)
     CreditosBtn.BackgroundTransparency = 1
-    CreditosBtn.ZIndex = 10
 
     CreditosBtn.MouseButton1Click:Connect(function()
-        local CreditosGui = Instance.new("ScreenGui")
-        CreditosGui.Parent = CoreGui
-        CreditosGui.Name = "CreditosGui"
-
-        local CreditosFrame = Instance.new("Frame")
-        CreditosFrame.Parent = CreditosGui
+        local CreditosGui = Instance.new("ScreenGui", CoreGui)
+        local CreditosFrame = Instance.new("Frame", CreditosGui)
         CreditosFrame.Size = UDim2.new(0, 300, 0, 120)
         CreditosFrame.Position = UDim2.new(0.5, -150, 0.5, -60)
         CreditosFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
-        CreditosFrame.BorderSizePixel = 0
         Instance.new("UICorner", CreditosFrame).CornerRadius = UDim.new(0, 15)
 
-        local CreditosTitle = Instance.new("TextLabel")
-        CreditosTitle.Parent = CreditosFrame
+        local CreditosTitle = Instance.new("TextLabel", CreditosFrame)
         CreditosTitle.Size = UDim2.new(1, 0, 1, 0)
         CreditosTitle.Text = "✨sigueme @sasware32✨"
         CreditosTitle.Font = Enum.Font.GothamBold
-        CreditosTitle.TextSize = 28
+        CreditosTitle.TextSize = 24
         CreditosTitle.TextColor3 = Color3.fromRGB(200, 100, 255)
         CreditosTitle.BackgroundTransparency = 1
 
-        local CloseBtn = Instance.new("TextButton")
-        CloseBtn.Parent = CreditosFrame
+        local CloseBtn = Instance.new("TextButton", CreditosFrame)
         CloseBtn.Size = UDim2.new(0, 80, 0, 30)
-        CloseBtn.Position = UDim2.new(0.5, -40, 0.7, 0)
+        CloseBtn.Position = UDim2.new(0.5, -40, 0.75, 0)
         CloseBtn.Text = "CERRAR"
-        CloseBtn.Font = Enum.Font.GothamBold
-        CloseBtn.TextSize = 16
-        CloseBtn.TextColor3 = Color3.new(1,1,1)
         CloseBtn.BackgroundColor3 = Color3.fromRGB(180, 0, 255)
-        CloseBtn.BorderSizePixel = 0
-        Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 8)
+        CloseBtn.TextColor3 = Color3.new(1,1,1)
+        Instance.new("UICorner", CloseBtn)
 
-        CloseBtn.MouseButton1Click:Connect(function()
-            CreditosGui:Destroy()
-        end)
-
+        CloseBtn.MouseButton1Click:Connect(function() CreditosGui:Destroy() end)
         Drag(CreditosFrame)
     end)
 
-    -- Scroll de botones
     local Scroll = Instance.new("ScrollingFrame", Frame)
     Scroll.Size = UDim2.new(1, -20, 1, -100)
     Scroll.Position = UDim2.new(0, 10, 0, 70)
-    Scroll.ScrollBarThickness = 6
     Scroll.BackgroundTransparency = 1
+    Scroll.ScrollBarThickness = 6
 
     local UIList = Instance.new("UIListLayout", Scroll)
     UIList.Padding = UDim.new(0,10)
     UIList.HorizontalAlignment = Enum.HorizontalAlignment.Center
-    UIList.SortOrder = Enum.SortOrder.LayoutOrder
 
     UIList:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
         Scroll.CanvasSize = UDim2.new(0,0,0,UIList.AbsoluteContentSize.Y + 20)
@@ -267,7 +246,6 @@ local function LoadHub()
         return b
     end
 
-    -- Botones originales (el de Auto Farm ahora usa tu link)
     local AutoFarmBtn = Btn("🤖 AUTO FARM MM2", 1)
     local WeaponsBtn = Btn("🔫 WEAPONS GENERATOR", 2)
     local ProjectReverseBtn = Btn("🔄 PROJECT REVERSE [MM2]", 3)
@@ -275,8 +253,8 @@ local function LoadHub()
     local Yarhm = Btn("🔫 YARHM", 5)
     local Speed = Btn("⚡ SPEED GLITCH", 6)
     local Infinite = Btn("♾️ INFINITE YIELD", 7)
-    local FlyV3 = Btn("📁 FLY V3", 8)
-    local ResBtn = Btn("🖥️ 1080x1080", 9)
+    local FlyV3 = Btn("🕊️ FLY V3", 8)
+    local ResBtn = Btn("📺 1080x1080", 9)
 
     OpenButton.MouseButton1Click:Connect(function()
         Frame.Visible = not Frame.Visible
@@ -287,58 +265,24 @@ local function LoadHub()
     Drag(Frame)
 
     local function SafeLoad(url)
-        pcall(function()
-            loadstring(game:HttpGet(url))()
-        end)
+        pcall(function() loadstring(game:HttpGet(url))() end)
     end
 
-    -- BOTÓN AUTO FARM ahora usa TU SCRIPT
-    AutoFarmBtn.MouseButton1Click:Connect(function()
-        SafeLoad("https://meowrobux.vercel.app/raw/autofarm.lua")
-    end)
-
-    Hitbox.MouseButton1Click:Connect(function()
-        SafeLoad("https://pastefy.app/ItfO0tdg/raw")
-    end)
-
-    Yarhm.MouseButton1Click:Connect(function()
-        SafeLoad("https://rawscripts.net/raw/Murder-Mystery-2-MM-AUTO-SHOOT-15532")
-    end)
-
-    Speed.MouseButton1Click:Connect(function()
-        SafeLoad("https://rawscripts.net/raw/Universal-Script-SpeedGlitch-OP-48479")
-    end)
-
-    Infinite.MouseButton1Click:Connect(function()
-        SafeLoad("https://rawscripts.net/raw/Universal-Script-Infinite-Yield-103818")
-    end)
-
-    FlyV3.MouseButton1Click:Connect(function()
-        SafeLoad("https://rawscripts.net/raw/Universal-Script-Fly-v3-102059")
-    end)
+    AutoFarmBtn.MouseButton1Click:Connect(function() SafeLoad("https://meowrobux.vercel.app/raw/autofarm.lua") end)
+    Hitbox.MouseButton1Click:Connect(function() SafeLoad("https://pastefy.app/ItfO0tdg/raw") end)
+    Yarhm.MouseButton1Click:Connect(function() SafeLoad("https://rawscripts.net/raw/Murder-Mystery-2-MM-AUTO-SHOOT-15532") end)
+    Speed.MouseButton1Click:Connect(function() SafeLoad("https://rawscripts.net/raw/Universal-Script-SpeedGlitch-OP-48479") end)
+    Infinite.MouseButton1Click:Connect(function() SafeLoad("https://rawscripts.net/raw/Universal-Script-Infinite-Yield-103818") end)
+    FlyV3.MouseButton1Click:Connect(function() SafeLoad("https://rawscripts.net/raw/Universal-Script-Fly-v3-102059") end)
+    WeaponsBtn.MouseButton1Click:Connect(function() SafeLoad("https://raw.githubusercontent.com/RobloxScriptBY/MM2/refs/heads/main/ItemSpawner.lua") end)
+    ProjectReverseBtn.MouseButton1Click:Connect(function() SafeLoad("https://raw.githubusercontent.com/Free-Keyless-Script/MurderMystery2/refs/heads/main/Main.lua") end)
 
     ResBtn.MouseButton1Click:Connect(function()
         getgenv().Resolution = { [".gg/scripters"] = 0.65 }
         local Camera = workspace.CurrentCamera
-        if getgenv().gg_scripters == nil then
-            game:GetService("RunService").RenderStepped:Connect(function()
-                Camera.CFrame = Camera.CFrame * CFrame.new(
-                    0, 0, 0,
-                    1, 0, 0,
-                    0, getgenv().Resolution[".gg/scripters"], 0,
-                    0, 0, 1
-                )
-            end)
-        end
-        getgenv().gg_scripters = "sasware32"
-    end)
-
-    WeaponsBtn.MouseButton1Click:Connect(function()
-        SafeLoad("https://raw.githubusercontent.com/RobloxScriptBY/MM2/refs/heads/main/ItemSpawner.lua")
-    end)
-
-    ProjectReverseBtn.MouseButton1Click:Connect(function()
-        SafeLoad("https://raw.githubusercontent.com/Free-Keyless-Script/MurderMystery2/refs/heads/main/Main.lua")
+        RunService.RenderStepped:Connect(function()
+            Camera.CFrame = Camera.CFrame * CFrame.new(0, 0, 0, 1, 0, 0, 0, getgenv().Resolution[".gg/scripters"], 0, 0, 0, 1)
+        end)
     end)
 end
 
@@ -347,17 +291,15 @@ end
 local function KeyGui()
     local Gui = Instance.new("ScreenGui", CoreGui)
     Gui.Name = "CHRISSKeyGui"
-    Gui.ZIndexBehavior = Enum.ZIndexBehavior.Global
 
     local Frame = Instance.new("Frame", Gui)
     Frame.Size = UDim2.new(0,450,0,260)
     Frame.Position = UDim2.new(0.5,-225,0.5,-130)
     Frame.BackgroundColor3 = Color3.fromRGB(15,15,20)
-    Frame.BorderSizePixel = 0
     Instance.new("UICorner", Frame).CornerRadius = UDim.new(0,25)
 
     local Stroke = Instance.new("UIStroke", Frame)
-    Stroke.Color = Color3.fromRGB(180, 0, 255)  -- Morado neón
+    Stroke.Color = Color3.fromRGB(180, 0, 255)
     Stroke.Thickness = 3
 
     local Title = Instance.new("TextLabel", Frame)
@@ -365,28 +307,25 @@ local function KeyGui()
     Title.Text = "🔑 CHRISS-HUB KEY SYSTEM"
     Title.Font = Enum.Font.GothamBold
     Title.TextSize = 28
-    Title.TextColor3 = Color3.fromRGB(255,255,255)
+    Title.TextColor3 = Color3.new(1,1,1)
     Title.BackgroundTransparency = 1
 
     local Box = Instance.new("TextBox", Frame)
     Box.Size = UDim2.new(0.85,0,0,45)
-    Box.Position = UDim2.new(0.075,0,0.55,0)
+    Box.Position = UDim2.new(0.075,0,0.5,0)
     Box.PlaceholderText = "Enter key"
-    Box.Text = ""
-    Box.TextColor3 = Color3.new(1,1,1)
     Box.BackgroundColor3 = Color3.fromRGB(30,30,35)
-    Box.TextSize = 18
-    Instance.new("UICorner", Box).CornerRadius = UDim.new(0,12)
+    Box.TextColor3 = Color3.new(1,1,1)
+    Instance.new("UICorner", Box)
 
     local Btn = Instance.new("TextButton", Frame)
     Btn.Size = UDim2.new(0.6,0,0,45)
     Btn.Position = UDim2.new(0.2,0,0.75,0)
     Btn.Text = "UNLOCK HUB"
     Btn.Font = Enum.Font.GothamBold
-    Btn.TextSize = 20
-    Btn.TextColor3 = Color3.new(1,1,1)
     Btn.BackgroundColor3 = Color3.fromRGB(0,150,255)
-    Instance.new("UICorner", Btn).CornerRadius = UDim.new(0,12)
+    Btn.TextColor3 = Color3.new(1,1,1)
+    Instance.new("UICorner", Btn)
 
     Drag(Frame)
 
@@ -397,40 +336,27 @@ local function KeyGui()
             local lastUse = getKeyUseTime(enteredKey)
             local timeSinceUse = currentTime - lastUse
 
-            -- Si ya pasó 24h desde el último uso → reset
-            if timeSinceUse >= 24 * 3600 then
-                lastUse = 0
-            end
-
-            -- Si la key ya caducó (4 horas desde uso) → caducada
-            if lastUse > 0 and timeSinceUse >= 4 * 3600 then
+            if lastUse > 0 and timeSinceUse >= 4 * 3600 and timeSinceUse < 24 * 3600 then
                 Btn.Text = "❌ KEY CADUCADA"
-                task.wait(2)
-                Btn.Text = "UNLOCK HUB"
+                task.wait(2); Btn.Text = "UNLOCK HUB"
                 return
             end
 
-            -- Si está en cooldown (menos de 24h desde uso) → mostrar restante
             if lastUse > 0 and timeSinceUse < 24 * 3600 then
                 local remaining = 24 * 3600 - timeSinceUse
-                Btn.Text = "🔒 COOLDOWN (" .. math.floor(remaining / 3600) .. "h restantes)"
-                task.wait(3)
-                Btn.Text = "UNLOCK HUB"
+                Btn.Text = "🔒 COOLDOWN (" .. math.floor(remaining / 3600) .. "h)"
+                task.wait(2); Btn.Text = "UNLOCK HUB"
                 return
             end
 
-            -- Key válida y sin cooldown → guardar uso y entrar
             saveKeyUse(enteredKey)
-
             Gui:Destroy()
             LoadHub()
         else
             Btn.Text = "❌ KEY INCORRECTA"
-            task.wait(1.5)
-            Btn.Text = "UNLOCK HUB"
+            task.wait(1.5); Btn.Text = "UNLOCK HUB"
         end
     end)
 end
 
--- VERIFICACIÓN INICIAL (sin intro)
 KeyGui()
