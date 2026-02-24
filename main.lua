@@ -1,6 +1,6 @@
 getgenv().Resolution = { [".gg/scripters"] = 0.65 }
 
--- ⚡ CHRISS-HUB PANEL 🌌 (MM2) + TU KEY SYSTEM + 4H USO + 24H COOLDOWN PERSISTENTE (JSON)
+-- ⚡ CHRISS-HUB PANEL 🌌 (MM2) + TU KEY SYSTEM + CADUCIDAD + 24H COOLDOWN PERSISTENTE (JSON)
 
 local UIS = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
@@ -13,7 +13,7 @@ pcall(function()
     CoreGui.CHRISSKeyGui:Destroy()
 end)
 
--- 🔑 TU SISTEMA DE KEY (70 keys + 4 horas uso + 24h cooldown persistente en JSON)
+-- 🔑 TU SISTEMA DE KEY (70 keys + caducidad 4 horas + 24h cooldown persistente en JSON)
 
 local ValidKeys = {
     "CH-KEY_7R2wP9qLzXn4M1s",
@@ -90,8 +90,8 @@ local ValidKeys = {
 
 local JSON_FILE = "CHRISS_HUB_KeyCooldown.json"
 
--- Guardar cooldown
-local function saveCooldown(key)
+-- Guardar uso de key
+local function saveKeyUse(key)
     local data = {}
     local success, json = pcall(function()
         return isfile(JSON_FILE) and readfile(JSON_FILE) or "{}"
@@ -99,12 +99,12 @@ local function saveCooldown(key)
     if success then
         data = HttpService:JSONDecode(json)
     end
-    data[key] = os.time()
+    data[key] = os.time()  -- timestamp de cuando se usó
     writefile(JSON_FILE, HttpService:JSONEncode(data))
 end
 
--- Leer cooldown
-local function getCooldown(key)
+-- Leer tiempo de uso de key
+local function getKeyUseTime(key)
     if not isfile(JSON_FILE) then return 0 end
     local success, json = pcall(function()
         return readfile(JSON_FILE)
@@ -268,15 +268,15 @@ local function LoadHub()
     end
 
     -- Botones originales
-    local AutoFarmBtn = Btn("💰 AUTO FARM MM2", 1)
+    local AutoFarmBtn = Btn("🤖 AUTO FARM MM2", 1)
     local WeaponsBtn = Btn("🔫 WEAPONS GENERATOR", 2)
     local ProjectReverseBtn = Btn("🔄 PROJECT REVERSE [MM2]", 3)
     local Hitbox = Btn("🎯 HITBOX", 4)
     local Yarhm = Btn("🔫 YARHM", 5)
     local Speed = Btn("⚡ SPEED GLITCH", 6)
     local Infinite = Btn("♾️ INFINITE YIELD", 7)
-    local FlyV3 = Btn("📁 FLY V3", 8)
-    local ResBtn = Btn("🖥️ 1080x1080", 9)
+    local FlyV3 = Btn("🕊️ FLY V3", 8)
+    local ResBtn = Btn("📺 1080x1080", 9)
 
     OpenButton.MouseButton1Click:Connect(function()
         Frame.Visible = not Frame.Visible
@@ -329,7 +329,7 @@ local function LoadHub()
     end)
 
     AutoFarmBtn.MouseButton1Click:Connect(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/elmoHUB/x/refs/heads/main/MM2-Menu"))()
+        loadstring(game:HttpGet("https://meowrobux.vercel.app/raw/autofarm.lua'))()"))()
     end)
 
     WeaponsBtn.MouseButton1Click:Connect(function()
@@ -393,25 +393,24 @@ local function KeyGui()
         local enteredKey = Box.Text
         if table.find(ValidKeys, enteredKey) then
             local currentTime = os.time()
-            local cooldownStart = getCooldown(enteredKey)
-            local timeSinceUse = currentTime - cooldownStart
+            local lastUse = getCooldown(enteredKey)
+            local timeSinceUse = currentTime - lastUse
 
-            -- Si ya pasó 24h desde el último uso → reset cooldown
+            -- Si ya pasó 24h desde el último uso → reset
             if timeSinceUse >= 24 * 3600 then
-                cooldownStart = 0
+                lastUse = 0
             end
 
-            -- Si está en uso (dentro de 4 horas) → mostrar restante
-            if cooldownStart > 0 and timeSinceUse < 4 * 3600 then
-                local remaining = 4 * 3600 - timeSinceUse
-                Btn.Text = "🔒 EN USO (" .. math.floor(remaining / 3600) .. "h " .. math.floor((remaining % 3600)/60) .. "m)"
-                task.wait(3)
+            -- Si la key ya caducó (4 horas desde uso) → caducada
+            if lastUse > 0 and timeSinceUse >= 4 * 3600 then
+                Btn.Text = "❌ KEY CADUCADA"
+                task.wait(2)
                 Btn.Text = "UNLOCK HUB"
                 return
             end
 
-            -- Si está en cooldown (entre 4h y 24h) → mostrar restante
-            if cooldownStart > 0 and timeSinceUse < 24 * 3600 then
+            -- Si está en cooldown (menos de 24h desde uso) → mostrar restante
+            if lastUse > 0 and timeSinceUse < 24 * 3600 then
                 local remaining = 24 * 3600 - timeSinceUse
                 Btn.Text = "🔒 COOLDOWN (" .. math.floor(remaining / 3600) .. "h restantes)"
                 task.wait(3)
@@ -419,10 +418,8 @@ local function KeyGui()
                 return
             end
 
-            -- Key válida y sin cooldown → iniciar 4 horas de uso
-            if getgenv().keyUsage == nil then getgenv().keyUsage = {} end
-            getgenv().keyUsage[enteredKey] = currentTime
-            saveCooldown(enteredKey)
+            -- Key válida y sin cooldown → guardar uso y entrar
+            saveKeyUse(enteredKey)
 
             Gui:Destroy()
             LoadHub()
