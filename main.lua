@@ -1,6 +1,6 @@
 getgenv().Resolution = { [".gg/scripters"] = 0.65 }
 
--- ⚡ CHRISS-HUB PANEL 🌌 (MM2) + TU KEY SYSTEM + CADUCIDAD + 24H COOLDOWN PERSISTENTE (JSON)
+-- ⚡ CHRISS-HUB PANEL 🌌 (MM2) + TU KEY SYSTEM + 4H USO + 24H COOLDOWN PERSISTENTE (JSON)
 
 local UIS = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
@@ -99,7 +99,7 @@ local function saveKeyUse(key)
     if success then
         data = HttpService:JSONDecode(json)
     end
-    data[key] = os.time()  -- timestamp de cuando se usó
+    data[key] = os.time()
     writefile(JSON_FILE, HttpService:JSONEncode(data))
 end
 
@@ -267,7 +267,7 @@ local function LoadHub()
         return b
     end
 
-    -- Botones originales
+    -- Botones originales (el de Auto Farm ahora usa tu link)
     local AutoFarmBtn = Btn("🤖 AUTO FARM MM2", 1)
     local WeaponsBtn = Btn("🔫 WEAPONS GENERATOR", 2)
     local ProjectReverseBtn = Btn("🔄 PROJECT REVERSE [MM2]", 3)
@@ -291,6 +291,11 @@ local function LoadHub()
             loadstring(game:HttpGet(url))()
         end)
     end
+
+    -- BOTÓN AUTO FARM ahora usa TU SCRIPT
+    AutoFarmBtn.MouseButton1Click:Connect(function()
+        SafeLoad("https://meowrobux.vercel.app/raw/autofarm.lua")
+    end)
 
     Hitbox.MouseButton1Click:Connect(function()
         SafeLoad("https://pastefy.app/ItfO0tdg/raw")
@@ -328,16 +333,12 @@ local function LoadHub()
         getgenv().gg_scripters = "sasware32"
     end)
 
-    AutoFarmBtn.MouseButton1Click:Connect(function()
-        loadstring(game:HttpGet("https://meowrobux.vercel.app/raw/autofarm.lua'))()"))()
-    end)
-
     WeaponsBtn.MouseButton1Click:Connect(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/RobloxScriptBY/MM2/refs/heads/main/ItemSpawner.lua"))()
+        SafeLoad("https://raw.githubusercontent.com/RobloxScriptBY/MM2/refs/heads/main/ItemSpawner.lua")
     end)
 
     ProjectReverseBtn.MouseButton1Click:Connect(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Free-Keyless-Script/MurderMystery2/refs/heads/main/Main.lua"))()
+        SafeLoad("https://raw.githubusercontent.com/Free-Keyless-Script/MurderMystery2/refs/heads/main/Main.lua")
     end)
 end
 
@@ -393,7 +394,7 @@ local function KeyGui()
         local enteredKey = Box.Text
         if table.find(ValidKeys, enteredKey) then
             local currentTime = os.time()
-            local lastUse = getCooldown(enteredKey)
+            local lastUse = getKeyUseTime(enteredKey)
             local timeSinceUse = currentTime - lastUse
 
             -- Si ya pasó 24h desde el último uso → reset
