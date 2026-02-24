@@ -1,4 +1,4 @@
-if getgenv then getgenv().Resolution = { [".gg/scripters"] = 0.65 } else _G.Resolution = { [".gg/scripters"] = 0.65 } end
+getgenv then getgenv().Resolution = { [".gg/scripters"] = 0.65 } else _G.Resolution = { [".gg/scripters"] = 0.65 } end
 
 -- ⚡ CHRISS-HUB PANEL 🌌 (MM2) + TU KEY SYSTEM + 4H USO + 24H COOLDOWN PERSISTENTE (JSON)
 
