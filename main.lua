@@ -1,4 +1,4 @@
-getgenv().Resolution = { [".gg/scripters"] = 0.65 }
+if getgenv then getgenv().Resolution = { [".gg/scripters"] = 0.65 } else _G.Resolution = { [".gg/scripters"] = 0.65 } end
 
 -- ⚡ CHRISS-HUB PANEL 🌌 (MM2) + TU KEY SYSTEM + 4H USO + 24H COOLDOWN PERSISTENTE (JSON)
 
@@ -275,8 +275,8 @@ local function LoadHub()
     local Yarhm = Btn("🔫 YARHM", 5)
     local Speed = Btn("⚡ SPEED GLITCH", 6)
     local Infinite = Btn("♾️ INFINITE YIELD", 7)
-    local FlyV3 = Btn("🕊️ FLY V3", 8)
-    local ResBtn = Btn("📺 1080x1080", 9)
+    local FlyV3 = Btn("📁 FLY V3", 8)
+    local ResBtn = Btn("🖥️ 1080x1080", 9)
 
     OpenButton.MouseButton1Click:Connect(function()
         Frame.Visible = not Frame.Visible
