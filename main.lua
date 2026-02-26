@@ -1,6 +1,6 @@
--- CHRISSHUB PANEL 🌌 (MM2) + TU KEY SYSTEM + 4H USO + 24H COOLDOWN PERSISTENTE (JSON)
+--CHRISS-HUB PANEL 🌌 MM2 🖥️--
 
-getgenv().Resolution = { [".gg/scripters"] = 0.65 }
+getgenv().Resolution={ [".gg/scripters"]=0.65}
 
 local UIS = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
