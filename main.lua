@@ -1,6 +1,7 @@
 getgenv().Resolution = { [".gg/scripters"] = 0.65 }
 
--- ⚡ CHRISS-HUB PANEL 🌌 (MM2) + TU KEY SYSTEM + NUEVO AUTO FARM 🔥
+-- CHRISS-HUB PANEL MM2
+-- VERSION REPARADA SIN EMOJIS EN CABECERA
 
 local UIS = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
@@ -13,7 +14,7 @@ pcall(function()
     if CoreGui:FindFirstChild("CHRISSKeyGui") then CoreGui.CHRISSKeyGui:Destroy() end
 end)
 
--- 🔑 TU SISTEMA DE KEY (70 keys)
+-- SISTEMA DE KEYS
 local ValidKeys = {
     "CH-KEY_7R2wP9qLzXn4M1s", "CH-KEY_k8B3vT6yJ1m0NqW", "CH-KEY_Z9pL5rQ2xV4n8M1",
     "CH-KEY_w3K7jS1m9B0vT6y", "CH-KEY_H2nP8rQ5xL9zW4m", "CH-KEY_t6V1yJ3k8B0mS9q",
@@ -22,7 +23,23 @@ local ValidKeys = {
     "CH-KEY_R2pL5qN9z4w8M1x", "CH-KEY_k7S3m1vT6yB0q8W", "CH-KEY_P4nL8rQ2z9xV1wM",
     "CH-KEY_v3k8B1m0N9qJyS6", "CH-KEY_Q2rL5pN9z4w8M1x", "CH-KEY_m7S3v1T6yB2q0Wk",
     "CH-KEY_N7nL3rQ8z1xV5wP", "CH-KEY_B9k2m6N4qJyS0vT", "CH-KEY_L1qN5z9w2M8xR4p",
-    "CH-KEY_S7v4T1yB9q2Wk3m", "CH-KEY_L0rQ6z2xV8wPN1n", "CH-KEY_k4m9N1qJyS5vT8B"
+    "CH-KEY_S7v4T1yB9q2Wk3m", "CH-KEY_L0rQ6z2xV8wPN1n", "CH-KEY_k4m9N1qJyS5vT8B",
+    "CH-KEY_qN9z4w8M1xR2pL5", "CH-KEY_v1T6yB0q8Wk7mS3", "CH-KEY_rQ2z9xV1wPN4nL8",
+    "CH-KEY_m1N9qJyS6vT3Bk8", "CH-KEY_9z4w8M1xR2pL5qN", "CH-KEY_T6yB0q8Wk7mS3v1",
+    "CH-KEY_Q2z9xV1wPN4nL8r", "CH-KEY_N9qJyS6vT3Bk8m1", "CH-KEY_4w8M1xR2pL5qN9z",
+    "CH-KEY_B0q8Wk7mS3v1T6y", "CH-KEY_z9xV1wPN4nL8rQ2", "CH-KEY_qJyS6vT3Bk8m1N9",
+    "CH-KEY_8M1xR2pL5qN9z4w", "CH-KEY_q8Wk7mS3v1T6yB0", "CH-KEY_xV1wPN4nL8rQ2z9",
+    "CH-KEY_yS6vT3Bk8m1N9qJ", "CH-KEY_M1xR2pL5qN9z4w8", "CH-KEY_Wk7mS3v1T6yB0q8",
+    "CH-KEY_V1wPN4nL8rQ2z9x", "CH-KEY_S6vT3Bk8m1N9qJy", "CH-KEY_xR2pL5qN9z4w8M1",
+    "CH-KEY_k7mS3v1T6yB0q8W", "CH-KEY_1wPN4nL8rQ2z9xV", "CH-KEY_6vT3Bk8m1N9qJyS",
+    "CH-KEY_X7rL2qN5zP8w4M0", "CH-KEY_Z1pM9rQ4xV2n7L3", "CH-KEY_H4k9vJ2m6B1nT8p",
+    "CH-KEY_t0W3xL5z7Q8vR1m", "CH-KEY_Y2n8pM4k7L9xQ1w", "CH-KEY_b5vT9jR3s6N2m0Q",
+    "CH-KEY_k1P8zL4x7V2wR5n", "CH-KEY_M9q0sJ3k7B6vT2W", "CH-KEY_L4p8rZ1x9V2nQ5m",
+    "CH-KEY_s7V1yK4k8B2mN0q", "CH-KEY_R9pL2qN5zP4w7M1", "CH-KEY_k3S6m8vT1yB0q4W",
+    "CH-KEY_P2nL5rQ9z8xV1wM", "CH-KEY_v7k1B4m0N9qJyS3", "CH-KEY_Q8rL2pN5z7w4M1x",
+    "CH-KEY_m4S1v9T6yB2q0Wk", "CH-KEY_N7nL3rQ8z1xV5wP", "CH-KEY_B9k2m6N4qJyS0vT",
+    "CH-KEY_L1qN5z9w2M8xR4p", "CH-KEY_S7v4T1yB9q2Wk3m", "CH-KEY_L0rQ6z2xV8wPN1n",
+    "CH-KEY_k4m9N1qJyS5vT8B"
 }
 
 local JSON_FILE = "CHRISS_HUB_KeyCooldown.json"
@@ -62,7 +79,6 @@ local function Drag(gui)
     UIS.InputEnded:Connect(function() dragging = false end)
 end
 
--- ================= HUB =================
 local function LoadHub()
     local Gui = Instance.new("ScreenGui", CoreGui)
     Gui.Name = "CHRISSHUB"
@@ -88,10 +104,7 @@ local function LoadHub()
     Frame.BackgroundTransparency = 0.15
     Frame.Visible = false
     Frame.Active = true
-
-    local Stroke = Instance.new("UIStroke", Frame)
-    Stroke.Thickness = 3
-    Stroke.Color = Color3.fromRGB(180, 0, 255)
+    Instance.new("UIStroke", Frame).Color = Color3.fromRGB(180, 0, 255)
 
     local Title = Instance.new("TextLabel", Frame)
     Title.Size = UDim2.new(1,0,0,60)
@@ -106,7 +119,6 @@ local function LoadHub()
     Scroll.Position = UDim2.new(0, 10, 0, 70)
     Scroll.BackgroundTransparency = 1
     Scroll.ScrollBarThickness = 6
-
     local UIList = Instance.new("UIListLayout", Scroll)
     UIList.Padding = UDim.new(0,10)
     UIList.HorizontalAlignment = Enum.HorizontalAlignment.Center
@@ -128,13 +140,15 @@ local function LoadHub()
         return b
     end
 
-    -- BOTONES
+    -- BOTONES ORIGINALES RESTAURADOS
     local AutoFarmBtn = Btn("🤖 AUTO FARM MM2", 1)
     local WeaponsBtn = Btn("🔫 WEAPONS GENERATOR", 2)
     local ProjectReverseBtn = Btn("🔄 PROJECT REVERSE [MM2]", 3)
     local Hitbox = Btn("🎯 HITBOX", 4)
+    local Yarhm = Btn("🔫 YARHM", 5)
     local Speed = Btn("⚡ SPEED GLITCH", 6)
     local Infinite = Btn("♾️ INFINITE YIELD", 7)
+    local FlyV3 = Btn("🕊️ FLY V3", 8)
     local ResBtn = Btn("📺 1080x1080", 9)
 
     OpenButton.MouseButton1Click:Connect(function()
@@ -147,22 +161,37 @@ local function LoadHub()
 
     -- ACCIONES DE BOTONES
     AutoFarmBtn.MouseButton1Click:Connect(function()
-        -- NUEVO SCRIPT DE AUTO FARM AÑADIDO AQUÍ 👇
         loadstring(game:HttpGet("https://meowrobux.vercel.app/raw/autofarm.lua"))()
     end)
 
-    Hitbox.MouseButton1Click:Connect(function()
-        loadstring(game:HttpGet("https://pastefy.app/ItfO0tdg/raw"))()
+    WeaponsBtn.MouseButton1Click:Connect(function() 
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/RobloxScriptBY/MM2/refs/heads/main/ItemSpawner.lua"))() 
     end)
 
-    Speed.MouseButton1Click:Connect(function()
-        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-SpeedGlitch-OP-48479"))()
+    ProjectReverseBtn.MouseButton1Click:Connect(function() 
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Free-Keyless-Script/MurderMystery2/refs/heads/main/Main.lua"))() 
     end)
 
-    Infinite.MouseButton1Click:Connect(function()
-        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Infinite-Yield-103818"))()
+    Hitbox.MouseButton1Click:Connect(function() 
+        loadstring(game:HttpGet("https://pastefy.app/ItfO0tdg/raw"))() 
     end)
-    
+
+    Yarhm.MouseButton1Click:Connect(function() 
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Murder-Mystery-2-MM-AUTO-SHOOT-15532"))() 
+    end)
+
+    Speed.MouseButton1Click:Connect(function() 
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-SpeedGlitch-OP-48479"))() 
+    end)
+
+    Infinite.MouseButton1Click:Connect(function() 
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Infinite-Yield-103818"))() 
+    end)
+
+    FlyV3.MouseButton1Click:Connect(function() 
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fly-v3-102059"))() 
+    end)
+
     ResBtn.MouseButton1Click:Connect(function()
         getgenv().Resolution = { [".gg/scripters"] = 0.65 }
         local Camera = workspace.CurrentCamera
@@ -170,17 +199,8 @@ local function LoadHub()
             Camera.CFrame = Camera.CFrame * CFrame.new(0,0,0,1,0,0,0,getgenv().Resolution[".gg/scripters"],0,0,0,1)
         end)
     end)
-
-    WeaponsBtn.MouseButton1Click:Connect(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/RobloxScriptBY/MM2/refs/heads/main/ItemSpawner.lua"))()
-    end)
-
-    ProjectReverseBtn.MouseButton1Click:Connect(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Free-Keyless-Script/MurderMystery2/refs/heads/main/Main.lua"))()
-    end)
 end
 
--- ================= KEY SYSTEM GUI =================
 local function KeyGui()
     local Gui = Instance.new("ScreenGui", CoreGui)
     Gui.Name = "CHRISSKeyGui"
