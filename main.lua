@@ -1,5 +1,7 @@
 getgenv().Resolution = { [".gg/scripters"] = 0.65 }
---CHRISS-HUB NEW PANEL 🌌 🖥️ + SEGURIDAD INSANA ALA VRG 🔥
+
+-- ⚡ CHRISS-HUB PANEL 🌌 (MM2) + TU KEY SYSTEM + 4H USO + 24H COOLDOWN PERSISTENTE (JSON)
+
 local UIS = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
 local RunService = game:GetService("RunService")
@@ -11,7 +13,7 @@ pcall(function()
     if CoreGui:FindFirstChild("CHRISSKeyGui") then CoreGui.CHRISSKeyGui:Destroy() end
 end)
 
--- 🔑 TU SISTEMA DE KEY (70 keys + caducidad 4 horas + 24h cooldown persistente en JSON)
+-- 🔑 TU SISTEMA DE KEY (70 keys + 4 horas uso + 24h cooldown persistente en JSON)
 
 local ValidKeys = {
     "CH-KEY_7R2wP9qLzXn4M1s",
@@ -88,8 +90,8 @@ local ValidKeys = {
 
 local JSON_FILE = "CHRISS_HUB_KeyCooldown.json"
 
--- Guardar uso de key
-local function saveKeyUse(key)
+-- Guardar cooldown
+local function saveCooldown(key)
     local data = {}
     local success, json = pcall(function()
         return isfile(JSON_FILE) and readfile(JSON_FILE) or "{}"
@@ -101,8 +103,8 @@ local function saveKeyUse(key)
     writefile(JSON_FILE, HttpService:JSONEncode(data))
 end
 
--- Leer tiempo de uso de key
-local function getKeyUseTime(key)
+-- Leer cooldown
+local function getCooldown(key)
     if not isfile(JSON_FILE) then return 0 end
     local success, json = pcall(function()
         return readfile(JSON_FILE)
@@ -167,6 +169,7 @@ local function LoadHub()
     Frame.BackgroundTransparency = 0.15
     Frame.Visible = false
     Frame.ZIndex = 1
+    Frame.Active = true
 
     -- Borde morado neón
     local Stroke = Instance.new("UIStroke", Frame)
@@ -256,8 +259,8 @@ local function LoadHub()
     local Yarhm = Btn("🔫 YARHM", 5)
     local Speed = Btn("⚡ SPEED GLITCH", 6)
     local Infinite = Btn("♾️ INFINITE YIELD", 7)
-    local FlyV3 = Btn("📁 FLY V3", 8)
-    local ResBtn = Btn("🖥️ 1080x1080", 9)
+    local FlyV3 = Btn("🕊️ FLY V3", 8)
+    local ResBtn = Btn("📺 1080x1080", 9)
 
     OpenButton.MouseButton1Click:Connect(function()
         Frame.Visible = not Frame.Visible
@@ -267,30 +270,27 @@ local function LoadHub()
     Drag(OpenButton)
     Drag(Frame)
 
-    local function SafeLoad(url, buttonName)
-        local success, err = pcall(function()
-            loadstring(game:HttpGet(url, true))()
-        end)
-        if not success then warn("Error cargando " .. buttonName .. ": " .. tostring(err)) end
+    local function SafeLoad(url)
+        pcall(function() loadstring(game:HttpGet(url))() end)
     end
 
-    AutoFarmBtn.MouseButton1Click:Connect(function() SafeLoad("https://meowrobux.vercel.app/raw/autofarm.lua", "Auto Farm") end)
-    Hitbox.MouseButton1Click:Connect(function() SafeLoad("https://pastefy.app/ItfO0tdg/raw", "Hitbox") end)
-    Yarhm.MouseButton1Click:Connect(function() SafeLoad("https://rawscripts.net/raw/Murder-Mystery-2-MM-AUTO-SHOOT-15532", "Yarhm") end)
-    Speed.MouseButton1Click:Connect(function() SafeLoad("https://rawscripts.net/raw/Universal-Script-SpeedGlitch-OP-48479", "Speed Glitch") end)
-    Infinite.MouseButton1Click:Connect(function() SafeLoad("https://rawscripts.net/raw/Universal-Script-Infinite-Yield-103818", "Infinite Yield") end)
-    FlyV3.MouseButton1Click:Connect(function() SafeLoad("https://rawscripts.net/raw/Universal-Script-Fly-v3-102059", "Fly V3") end)
+    AutoFarmBtn.MouseButton1Click:Connect(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/elmoHUB/x/refs/heads/main/MM2-Menu"))() end)
+    Hitbox.MouseButton1Click:Connect(function() SafeLoad("https://pastefy.app/ItfO0tdg/raw") end)
+    Yarhm.MouseButton1Click:Connect(function() SafeLoad("https://rawscripts.net/raw/Murder-Mystery-2-MM-AUTO-SHOOT-15532") end)
+    Speed.MouseButton1Click:Connect(function() SafeLoad("https://rawscripts.net/raw/Universal-Script-SpeedGlitch-OP-48479") end)
+    Infinite.MouseButton1Click:Connect(function() SafeLoad("https://rawscripts.net/raw/Universal-Script-Infinite-Yield-103818") end)
+    FlyV3.MouseButton1Click:Connect(function() SafeLoad("https://rawscripts.net/raw/Universal-Script-Fly-v3-102059") end)
     
     ResBtn.MouseButton1Click:Connect(function()
         getgenv().Resolution = { [".gg/scripters"] = 0.65 }
         local Camera = workspace.CurrentCamera
-        game:GetService("RunService").RenderStepped:Connect(function()
+        RunService.RenderStepped:Connect(function()
             Camera.CFrame = Camera.CFrame * CFrame.new(0,0,0,1,0,0,0,getgenv().Resolution[".gg/scripters"],0,0,0,1)
         end)
     end)
 
-    WeaponsBtn.MouseButton1Click:Connect(function() SafeLoad("https://raw.githubusercontent.com/RobloxScriptBY/MM2/refs/heads/main/ItemSpawner.lua", "Weapons") end)
-    ProjectReverseBtn.MouseButton1Click:Connect(function() SafeLoad("https://raw.githubusercontent.com/Free-Keyless-Script/MurderMystery2/refs/heads/main/Main.lua", "Project Reverse") end)
+    WeaponsBtn.MouseButton1Click:Connect(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/RobloxScriptBY/MM2/refs/heads/main/ItemSpawner.lua"))() end)
+    ProjectReverseBtn.MouseButton1Click:Connect(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Free-Keyless-Script/MurderMystery2/refs/heads/main/Main.lua"))() end)
 end
 
 -- ================= TU SISTEMA DE KEY =================
@@ -304,13 +304,6 @@ local function KeyGui()
     Frame.BackgroundColor3 = Color3.fromRGB(15,15,20)
     Instance.new("UICorner", Frame).CornerRadius = UDim.new(0,25)
     Instance.new("UIStroke", Frame).Color = Color3.fromRGB(180, 0, 255)
-
-    local Title = Instance.new("TextLabel", Frame)
-    Title.Size = UDim2.new(1,0,0,60)
-    Title.Text = "🔑 CHRISS-HUB KEY SYSTEM"
-    Title.TextColor3 = Color3.new(1,1,1)
-    Title.BackgroundTransparency = 1
-    Title.TextSize = 24
 
     local Box = Instance.new("TextBox", Frame)
     Box.Size = UDim2.new(0.85,0,0,45)
@@ -334,14 +327,17 @@ local function KeyGui()
         local enteredKey = Box.Text
         if table.find(ValidKeys, enteredKey) then
             local currentTime = os.time()
-            local lastUse = getKeyUseTime(enteredKey)
+            local lastUse = getCooldown(enteredKey)
+            
+            -- Lógica simplificada para evitar errores de variables no definidas
             if currentTime - lastUse < 24 * 3600 and lastUse > 0 then
                 if currentTime - lastUse >= 4 * 3600 then
                     Btn.Text = "❌ KEY CADUCADA"
                     return
                 end
             end
-            saveKeyUse(enteredKey)
+            
+            saveCooldown(enteredKey)
             Gui:Destroy()
             LoadHub()
         else
