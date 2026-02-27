@@ -1,6 +1,5 @@
-getgenv().Resolution={ [".gg/scripters"]=0.65 }
+getgenv().Resolution = {[".gg/scripters"] = 0.65}
 --CHRISS-HUB NEW PANEL 🌌 🖥️ + SEGURIDAD INSANA ALA VRG 🔥
-
 local UIS = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
 local RunService = game:GetService("RunService")
